@@ -6,9 +6,13 @@
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
-    "test": "node --test tests/"
+    "test": "node --test"
   },
   "keywords": [],
   "license": "UNLICENSED",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1"
+  }
 }
