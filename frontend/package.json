@@ -1,0 +1,11 @@
+{
+  "name": "momo-contest-frontend",
+  "version": "0.1.0",
+  "description": "Frontend web cho trợ lý tiền chung",
+  "scripts": {
+    "dev": "echo 'FE dev server – sẽ cấu hình ở S3'",
+    "build": "echo 'FE build – sẽ cấu hình ở S3'"
+  },
+  "keywords": [],
+  "license": "UNLICENSED"
+}

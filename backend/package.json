@@ -1,0 +1,14 @@
+{
+  "name": "momo-contest-backend",
+  "version": "0.1.0",
+  "description": "Backend API cho trợ lý tiền chung",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "test": "node --test tests/"
+  },
+  "keywords": [],
+  "license": "UNLICENSED",
+  "type": "module"
+}

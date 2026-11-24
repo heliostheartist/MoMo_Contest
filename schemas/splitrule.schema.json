@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "splitrule.schema.json",
+  "title": "SplitRule",
+  "description": "Quy tắc chia tiền, do AI chuyển từ lời mô tả tự do sang dạng có cấu trúc. Số tiền bằng đồng (VND), số nguyên.",
+  "type": "object",
+  "required": ["receipt_id", "created_at", "members", "rules"],
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Mã hóa đơn liên kết"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Thời điểm tạo quy tắc"
+    },
+    "description_raw": {
+      "type": ["string", "null"],
+      "description": "Lời mô tả cách chia nguyên văn của người dùng"
+    },
+    "members": {
+      "type": "array",
+      "minItems": 2,
+      "description": "Danh sách thành viên tham gia chia",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tên gọi trong nhóm"
+          },
+          "prepaid": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0,
+            "description": "Số tiền đã ứng trước (VND)"
+          },
+          "is_payer": {
+            "type": "boolean",
+            "default": false,
+            "description": "Có phải người lập hóa đơn (người ứng tiền) không"
+          }
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Danh sách quy tắc phân bổ từng món",
+      "items": {
+        "type": "object",
+        "required": ["item_index", "type", "shares"],
+        "properties": {
+          "item_index": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "index của món trong receipt (khớp với receipt.items[].index)"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["equal", "by_person", "exact", "exclude"],
+            "description": "Cách chia: equal = chia đều tất cả, by_person = chỉ người được liệt kê, exact = số tiền cụ thể, exclude = chia đều trừ người bị loại"
+          },
+          "shares": {
+            "type": "array",
+            "description": "Chi tiết phần chia cho từng người trong quy tắc này",
+            "items": {
+              "type": "object",
+              "required": ["member_name"],
+              "properties": {
+                "member_name": {
+                  "type": "string",
+                  "description": "Tên thành viên (khớp với members[].name)"
+                },
+                "quantity": {
+                  "type": ["integer", "null"],
+                  "minimum": 1,
+                  "description": "Số phần (nếu chia theo số lượng)"
+                },
+                "amount": {
+                  "type": ["integer", "null"],
+                  "minimum": 0,
+                  "description": "Số tiền cố định (VND, chỉ dùng khi type = exact)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "extra_charges_split": {
+      "type": "string",
+      "enum": ["proportional", "equal"],
+      "default": "proportional",
+      "description": "Cách chia phí phục vụ, thuế, giảm giá: proportional = theo tỷ lệ phần món, equal = chia đều"
+    }
+  }
+}
