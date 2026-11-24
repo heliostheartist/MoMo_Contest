@@ -1,0 +1,65 @@
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "created_at": "2026-11-24T12:30:00+07:00",
+  "image_url": "https://storage.example.com/receipts/a1b2c3d4.jpg",
+  "restaurant_name": "Quán Phở Hà Nội",
+  "currency": "VND",
+  "items": [
+    {
+      "index": 1,
+      "name": "Phở bò tái",
+      "quantity": 2,
+      "unit_price": 55000,
+      "amount": 110000,
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "index": 2,
+      "name": "Phở bò chín",
+      "quantity": 1,
+      "unit_price": 55000,
+      "amount": 55000,
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "index": 3,
+      "name": "Gỏi cuốn (2 cuốn)",
+      "quantity": 2,
+      "unit_price": 30000,
+      "amount": 60000,
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "index": 4,
+      "name": "Bia Sài Gòn",
+      "quantity": 3,
+      "unit_price": 25000,
+      "amount": 75000,
+      "confidence": "high",
+      "note": null
+    },
+    {
+      "index": 5,
+      "name": "Nước ngọt",
+      "quantity": 1,
+      "unit_price": 15000,
+      "amount": 15000,
+      "confidence": "high",
+      "note": null
+    }
+  ],
+  "subtotal": 315000,
+  "service_charge": 15750,
+  "tax": 33075,
+  "discount": 30000,
+  "total": 333825,
+  "total_printed": 333825,
+  "cross_check": {
+    "items_sum_matches_subtotal": true,
+    "total_matches_printed": true,
+    "flagged_items": []
+  }
+}

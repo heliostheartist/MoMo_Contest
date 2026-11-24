@@ -14,6 +14,13 @@
 
 - [Phân tích quyết định và rủi ro](product/analysis.md)
 
+## Schema
+
+- [Receipt](../schemas/receipt.schema.json): hóa đơn đã đọc từ ảnh
+- [SplitRule](../schemas/splitrule.schema.json): quy tắc chia tiền
+- [Allocation](../schemas/allocation.schema.json): kết quả phân bổ
+- [File mẫu](../schemas/examples/): dữ liệu minh họa cho cả 3 schema
+
 ## Kế hoạch
 
 - [Kế hoạch chung](planning/plan.md)

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "allocation.schema.json",
+  "title": "Allocation",
+  "description": "Kết quả phân bổ tiền cho từng người, đã qua kiểm tra tổng. Số tiền bằng đồng (VND), số nguyên.",
+  "type": "object",
+  "required": ["receipt_id", "created_at", "total", "shares", "validation"],
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Mã hóa đơn liên kết"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Thời điểm tính phân bổ"
+    },
+    "total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Tổng hóa đơn (VND), phải bằng receipt.total"
+    },
+    "rounding_method": {
+      "type": "string",
+      "const": "largest_remainder",
+      "description": "Phương pháp làm tròn: số dư lớn nhất"
+    },
+    "charge_order": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["discount", "service_charge", "tax"]
+      },
+      "default": ["discount", "service_charge", "tax"],
+      "description": "Thứ tự phân bổ: giảm giá → phí phục vụ → thuế"
+    },
+    "shares": {
+      "type": "array",
+      "minItems": 2,
+      "description": "Phần tiền từng người",
+      "items": {
+        "type": "object",
+        "required": ["member_name", "items_total", "discount_share", "service_charge_share", "tax_share", "gross", "prepaid", "net"],
+        "properties": {
+          "member_name": {
+            "type": "string",
+            "description": "Tên thành viên"
+          },
+          "items_detail": {
+            "type": "array",
+            "description": "Chi tiết từng món của người này",
+            "items": {
+              "type": "object",
+              "required": ["item_index", "item_name", "amount"],
+              "properties": {
+                "item_index": {
+                  "type": "integer",
+                  "description": "index của món trong receipt"
+                },
+                "item_name": {
+                  "type": "string",
+                  "description": "Tên món"
+                },
+                "amount": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Số tiền phần món này của người này (VND)"
+                }
+              }
+            }
+          },
+          "items_total": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Tổng phần món (VND)"
+          },
+          "discount_share": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Phần giảm giá được chia (VND, số dương = được giảm)"
+          },
+          "service_charge_share": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Phần phí phục vụ (VND)"
+          },
+          "tax_share": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Phần thuế (VND)"
+          },
+          "gross": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Tổng trước trừ ứng trước = items_total - discount_share + service_charge_share + tax_share (VND)"
+          },
+          "prepaid": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0,
+            "description": "Số tiền đã ứng trước (VND)"
+          },
+          "net": {
+            "type": "integer",
+            "description": "Số tiền còn phải trả = gross - prepaid (VND). Có thể âm nếu ứng nhiều hơn"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "claimed_paid", "confirmed", "cash"],
+            "default": "pending",
+            "description": "Trạng thái: pending = chưa trả, claimed_paid = bấm đã chuyển, confirmed = người lập xác nhận, cash = trả tiền mặt"
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["shares_sum_equals_total", "no_unexpected_negative", "order_independent"],
+      "description": "Kết quả kiểm tra do mã nguồn thực hiện",
+      "properties": {
+        "shares_sum_equals_total": {
+          "type": "boolean",
+          "description": "Tổng gross của tất cả thành viên có bằng total không"
+        },
+        "no_unexpected_negative": {
+          "type": "boolean",
+          "description": "Không ai có net âm ngoài trường hợp ứng trước"
+        },
+        "order_independent": {
+          "type": "boolean",
+          "description": "Đổi thứ tự thành viên không thay đổi kết quả"
+        },
+        "no_duplicate_item": {
+          "type": "boolean",
+          "description": "Không món nào bị tính cho hai người cùng toàn bộ"
+        }
+      }
+    },
+    "payment_link": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Đường link để từng thành viên xem phần mình và trả tiền"
+    }
+  }
+}
